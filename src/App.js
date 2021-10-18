@@ -1,10 +1,10 @@
 import './App.css';
-import Front from './Front';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Home from './Components/Home';
 function App() {
   return (
     <>
-       <Front/>
+       <Home/>
     </>
   );
 }
