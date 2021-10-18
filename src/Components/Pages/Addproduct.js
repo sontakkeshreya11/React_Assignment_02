@@ -31,7 +31,7 @@ const Addproduct = () => {
   }
   const validation=(title,image,details,price,category)=>{
     console.log("in validation title",title);
-    if(!title || !image || !details || !price || !category || title.indexOf(' ')===0){
+    if(!title || !image || !details || !price || !category || title.indexOf(' ')===0 || price.indexOf(' ')===0){
        setErrors("Field cant be empty or whitespace");
     }
     else{setValid(true);};
