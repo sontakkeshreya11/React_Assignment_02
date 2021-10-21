@@ -3,7 +3,7 @@ import {Form,Button,Row,Col,Offcanvas} from 'react-bootstrap';
 import Productstyle from '../Alignment/AlignEditedproduct';
 import axios from 'axios';
 import {useRef,useState} from 'react';
-import "../Style/Style.css";
+import '../Style/Style.css';
 const Addproduct = () => {
   const [productdetails,setProductdetails]=useState({title:"",category:"",price:"",image:"",details:""});
   const [show, setShow] = useState(false);
