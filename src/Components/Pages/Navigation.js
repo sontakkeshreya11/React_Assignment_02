@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef,useState,useEffect } from "react";
-import {Form,Button,Row,Col} from 'react-bootstrap'
+import {Form,Button,Row,Col} from 'react-bootstrap';
  import{ BrowserRouter as Router,
   Switch,
   Route,
@@ -11,7 +11,7 @@ import {Form,Button,Row,Col} from 'react-bootstrap'
 import Listproduct from "./Listproduct";
 import Usercart from "./Usercart";
 import Productoperation from "./Productoperation"
-import './Style.css';
+import '../Style/Style.css';
 import axios from "axios";
 export default function Navigation() {
   return (

@@ -11,7 +11,7 @@ function Usercart(){
     return(
         <>
         {cart.map((item)=>
-           <span>{item.products.map((product)=><Alignproduct productId={product.productId} date={item.date} quantity={product.quantity}/>)}</span>
+           <span key={item.products.productId}>{item.products.map((product)=><Alignproduct productId={product.productId} date={item.date} quantity={product.quantity}/>)}</span>
         )}
         </>
     )

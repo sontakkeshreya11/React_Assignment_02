@@ -1,9 +1,9 @@
 import {Card,Image,Row,Col,Table,Container} from 'react-bootstrap';
-import './Style.css';
+import '../Style/Style.css';
 function Productstyle({title,price,image,description,category}){
    return(
        <>
-        <Container fluid>
+        <Container fluid="sm">
         <Card className="cart-card">
         <Card.Body>
         <Row>

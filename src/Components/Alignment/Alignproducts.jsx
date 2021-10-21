@@ -1,17 +1,18 @@
 import {Card,ListGroup} from 'react-bootstrap';
-import './Style.css';
+import '../Style/Style.css';
+import {Container} from 'react-bootstrap';
 function Alignproducts({productData}){
    return(
        <>
-        <container fluid>
-         <section className="main-card--cointainer">
+        <Container fluid>
+        <section className="main-card--cointainer">
         {productData.map((curElem) => {
           const { id,title, category, image, description,price } = curElem;
 
           return (
             <>
-              <div className="card-container" key={id}>
-                <Card className="card ">
+              <div className="card-container">
+                <Card className="card " key={id}>
                 <Card.Img variant="top" src={image} />
                   <div className="card-body">
                     
@@ -34,7 +35,7 @@ function Alignproducts({productData}){
           );
         })}
       </section>
-        </container>
+        </Container>
        </>
     );
 }

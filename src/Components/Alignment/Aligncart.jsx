@@ -1,7 +1,7 @@
-import {Card,Image,Row,Col,Table} from 'react-bootstrap';
-import './Style.css';
+import {Container,Card,Image,Row,Col,Table} from 'react-bootstrap';
+import '../Style/Style.css';
 import axios from 'axios';
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 function Alignproduct({productId,date,quantity}){
     const [product,setProduct]=useState([]);
     const q=parseInt(quantity);
@@ -10,10 +10,13 @@ function Alignproduct({productId,date,quantity}){
         const response=await axios.get(`https://fakestoreapi.com/products/${productId}`);
         setProduct(response.data);
     }
-    getcart();
+    useEffect(() => {
+        getcart()
+
+    }, [])
    return(
        <>
-        <container fluid>
+        <Container fluid>
         <Card className="cart-card">
         <Card.Body>
         <Row>
@@ -22,8 +25,8 @@ function Alignproduct({productId,date,quantity}){
         </Col>
         <Col xs={1}></Col>
         <Col xs={7}>
+        <h2>{product.title}</h2>
         <Table striped bordered hover>
-          <h2>{product.title}</h2>
       <tbody>
        <tr>
         <td><b>Price</b></td>
@@ -43,7 +46,7 @@ function Alignproduct({productId,date,quantity}){
         </tr>
         <tr>
         <td><b>Total</b></td>
-        <td>${q*parseInt(product.price)}</td>
+        <td>${q*parseFloat(product.price)}</td>
         </tr>
         </tbody>
 </Table>
@@ -51,7 +54,7 @@ function Alignproduct({productId,date,quantity}){
         </Row>
         </Card.Body>
         </Card>
-        </container>
+        </Container>
     </>
     );
 }

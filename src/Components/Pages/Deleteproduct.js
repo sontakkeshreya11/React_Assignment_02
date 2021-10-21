@@ -3,7 +3,7 @@ import React from 'react';
 import { useState ,useRef} from 'react';
 import Productstyle from '../Alignment/AlignEditedproduct';
 import {Form,Row,Col,Button,Offcanvas} from 'react-bootstrap'
-import './Style.css';
+import '../Style/Style.css';
 function Deleteproduct() {
   const [show, setShow] = useState(false);
   const[product,setProduct]=useState([]);

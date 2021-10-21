@@ -3,12 +3,13 @@ import {Form,Button,Row,Col,Offcanvas} from 'react-bootstrap';
 import Productstyle from '../Alignment/AlignEditedproduct';
 import axios from 'axios';
 import {useRef,useState} from 'react';
-import './Style.css'
-const Editproduct= () => {
+import '../Style/Style.css';
+const Editproduct = () => {
+  const [productdetails,setProductdetails]=useState({id:"",title:"",category:"",price:"",image:"",details:""});
   const [show, setShow] = useState(false);
   const[valid,setValid]=useState(false);
   const[product,setProduct]=useState([]);
-  const[previousproduct,setPreviousproduct]=useState([]);
+  const[oldproduct,setOldproduct]=useState([]);
   const title_value=useRef(null);
   const image_value=useRef(null);
   const price_value=useRef(null);
@@ -18,57 +19,77 @@ const Editproduct= () => {
   const [errors,setErrors]=useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const editProduct= async(valid_id,valid_title,valid_image,valid_details,valid_price,valid_categoty)=>{
+  const newProduct= async()=>{
     setErrors("");
-    valid_id=parseInt(valid_id);
-    const response= await axios.put(`https://fakestoreapi.com/products/${valid_id}`,{
-      title: valid_title,
-      price: valid_price,
-      description: valid_details,
-      image: valid_image,
-      category:valid_categoty
+      const ide=parseInt(productdetails.id);
+      const response= await axios.put(`https://fakestoreapi.com/products/${ide}`,{
+      title:productdetails.title,
+      price: productdetails.price,
+      description: productdetails.details,
+      image: productdetails.image,
+      category:productdetails.category
   });
-  setProduct(response.data);
-   const response_prev=await axios.get(`https://fakestoreapi.com/products/${valid_id}`);
-    setPreviousproduct(response_prev.data);
+    const response_old=await axios.get(`https://fakestoreapi.com/products/${ide}`);
+    setProduct(response.data);
+    setOldproduct(response_old.data)
+
     handleShow();
-    [title_value,image_value,category_value,price_value,details_value].map((values)=>values.current.value="")
+    [id_value,title_value,image_value,category_value,price_value,details_value].map((values)=>values.current.value="")
   }
-  const validation=(id,title,image,details,price,category)=>{
-    console.log("in validation title",title);
-    if(!id || !title || !image || !details || !price || !category || title.indexOf(' ')===0){
-       setErrors("Field cant be empty or whitespace");
-    }
-    else{setValid(true);}
-    if(valid===true){editProduct(id,title,image,details,price,category)}}
+  const handleInput=(e)=>{
+      const name=e.target.name;
+      const value=e.target.value;
+      setProductdetails({...productdetails,[name]:value});
     
+  }
+  const validation=()=>{
+    setValid(true);
+    const id=productdetails.id;
+    const title=productdetails.title;
+    const price=productdetails.price;
+    const image=productdetails.image;
+    const details=productdetails.details;
+    const category=productdetails.category;
+    if(parseInt(id)>20 || parseInt(id)<1){setErrors("Id Is Invalid"); setValid(false)}
+    if(!id|| !title || !image || !details || !price || !category){
+       setErrors("Field cant be empty ");
+       setValid(false)
+    }
+    if(title.indexOf(" ")===0||image.indexOf(" ")===0||details.indexOf(" ")===0||price.indexOf(" ")===0||category.indexOf(" ")===0)
+    {setErrors("Field Cant Be whitespace");setValid(false)}
+   
+    submitstatus();
+  } 
+  const submitstatus=()=>{
+    if(valid===true){ newProduct()}
+  }
     return (
-        <>
-    <div className="container">
-            <Form>
-   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-    <Form.Label>Enter Id</Form.Label>
-    <Form.Control type="input" placeholder="Enter Product Title" ref={id_value}  />
+  <>
+  <div className="container">
+  <Form> 
+  <Form.Group className="mb-3" >
+    <Form.Label>Id</Form.Label>
+    <Form.Control type="input" placeholder="Enter id you want to edit" name="id"ref={id_value} onChange={handleInput} />
   </Form.Group>
-  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+  <Form.Group className="mb-3" >
     <Form.Label>Product Title</Form.Label>
-    <Form.Control type="input" placeholder="Enter Product Title" ref={title_value}  />
+    <Form.Control type="input" placeholder="Enter Product Title" name="title"ref={title_value} onChange={handleInput} />
   </Form.Group>
-  <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+  <Form.Group className="mb-3">
     <Form.Label>Category</Form.Label>
-    <Form.Control type="input" placeholder="Enter Category" ref={category_value} />
+  <Form.Control type="input" placeholder="Enter Category" name="category"ref={category_value}  onChange={handleInput}/>
   </Form.Group>
-  <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+  <Form.Group className="mb-3">
     <Form.Label>Price</Form.Label>
-    <Form.Control type="input" placeholder="Enter price (in $)"  ref={price_value}/>
+    <Form.Control type="input" placeholder="Enter price (in $)" name="price" ref={price_value} onChange={handleInput} />
   </Form.Group>
-  <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+  <Form.Group className="mb-3">
     <Form.Label>Image</Form.Label>
-    <Form.Control type="input" placeholder="Enter Image Path" ref={image_value}/>
+    <Form.Control type="input" placeholder="Enter Image Path" name="image" ref={image_value} onChange={handleInput} />
   </Form.Group>
   <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
     <Form.Label>Description</Form.Label>
-    <Form.Control as="textarea" rows={3} ref={details_value}/>
+    <Form.Control as="textarea" rows={3} placeholder="Enter Details of product" ref={details_value} name="details" onChange={handleInput} />
   </Form.Group>
   <span><p className="para">{errors}</p></span>
   <Form.Group  className="mb-3">
@@ -76,7 +97,7 @@ const Editproduct= () => {
       <Col xs={5}></Col>
       <Col xs={6}>
       <Button variant="outline-warning" type="reset" size="lg"onClick={()=>setErrors("")}>Reset</Button>{'  '}{' '}
-      <Button variant="outline-success" size="lg" onClick={()=>validation(id_value.current.value,title_value.current.value,image_value.current.value,details_value.current.value,price_value.current.value,category_value.current.value)}>Submit</Button>
+      <Button variant="outline-success" size="lg" onClick={()=>validation()}>Submit</Button>
       </Col>
     </Row>
     </Form.Group>
@@ -87,8 +108,9 @@ const Editproduct= () => {
         </Offcanvas.Header>
         <Offcanvas.Body>
            <Productstyle title={product.title} image={product.image} description={product.description} price={product.price} category={product.category}/>
-           <Offcanvas.Title>Your Previous Product</Offcanvas.Title>
-           <Productstyle title={previousproduct.title} image={previousproduct.image} description={previousproduct.description} price={previousproduct.price} category={previousproduct.category}/>      </Offcanvas.Body>
+           <Offcanvas.Title>Your previous product</Offcanvas.Title>
+           <Productstyle title={oldproduct.title} image={oldproduct.image} description={oldproduct.description} price={oldproduct.price} category={oldproduct.category}/>
+        </Offcanvas.Body>
       </Offcanvas>
 </div>
         </>
