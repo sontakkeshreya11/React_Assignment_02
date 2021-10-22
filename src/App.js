@@ -1,10 +1,10 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './Components/Home';
+import Navigation from './Components/Router/Navigation';
 function App() {
-  return (
+  return(
     <>
-       <Home/>
+       <Navigation/>
     </>
   );
 }

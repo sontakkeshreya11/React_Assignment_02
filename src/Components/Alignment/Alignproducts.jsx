@@ -1,6 +1,7 @@
 import {Card,ListGroup} from 'react-bootstrap';
 import '../Style/Style.css';
 import {Container} from 'react-bootstrap';
+
 function Alignproducts({productData}){
    return(
        <>
@@ -39,4 +40,5 @@ function Alignproducts({productData}){
        </>
     );
 }
+
 export default Alignproducts;

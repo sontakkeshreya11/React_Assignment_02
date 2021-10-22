@@ -1,21 +1,51 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Alignproducts from "../Alignment/Alignproducts";
+import {limitProduct,getCategory, getAllProducts} from "../../Api/Api";
+
 function Listproduct( {val,limit}){
     const [products,setProducts]=useState([]);
+    const[isLoading,setIsLoading]=useState(true);
     const getProducts=async(value,limit_value)=>{
-        const limit_int=parseInt(limit_value);
+        const limit=parseInt(limit_value);
         if(value===undefined){
-            const response= await axios.get(`https://fakestoreapi.com/products?limit=${limit_int}`);
-            setProducts(response.data);
+            if(limit===NaN){
+           try {
+               const response=await getAllProducts();
+               setProducts(response.data);
+               setIsLoading(false);
+              }
+            catch(e){
+                console.log(e);
+            }
         }
         else{
-            const response= await axios.get(`https://fakestoreapi.com/products/category/${value}`);
+            try {
+                const response=await limitProduct(limit);
+                setProducts(response.data);
+                setIsLoading(false);
+               }
+             catch(e){
+                 console.log(e);
+             }
+        }
+      }
+        else{
+            try{
+            const response= await getCategory(val);
             setProducts(response.data);
+            setIsLoading(false);
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     }
     useEffect(()=>getProducts(val,limit),[val,limit]);
     return(
-    <><Alignproducts productData={products}/></>);
+          <>
+            {isLoading?<p className="loading">loading....</p>:
+            <Alignproducts productData={products}/>}
+          </>
+        );
 }
 export default Listproduct;
